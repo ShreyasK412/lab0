@@ -4,34 +4,36 @@
 #include <linux/seq_file.h>
 #include <linux/sched.h>
 
+
+//Define a pointer to a proc_dir_entry struct called entry. 
+//This will be used to create and remove the virtual file in the /proc filesystem.
 static struct proc_dir_entry *entry;
 
-static int example(struct seq_file *m, void *v){
-	seq_printf(m, "hello world\n");
+
+static int proc_count(struct seq_file *m, void *v){
 	struct task_struct *p;
-	int sqr_sum = 0;
+	int process_count = 0;
 	for_each_process(p) {
-		seq_printf(m, "hello world\n");
+		process_count++;
 	}
+	seq_printf(m, "%d\n", process_count);	
 	return 0;
 }
 
-static int __init example_init(void)
+static int __init proc_count_init(void)
 {
-	entry = proc_create_single("example_virtual_file", 0, NULL, example);
-	pr_info("example: init\n");
+	entry = proc_create_single("count", 0, NULL, proc_count);
 	return 0;
 }
 
-static void __exit example_exit(void)
+static void __exit proc_count_exit(void)
 {
 	proc_remove(entry);
-	pr_info("example: exit\n");
 }
 
-module_init(example_init);
-module_exit(example_exit);
+module_init(proc_count_init);
+module_exit(proc_count_exit);
 
-MODULE_AUTHOR("Shreyas Kamath);
-MODULE_DESCRIPTION("CS111 Lab 0 Solution");
+MODULE_AUTHOR("Shreyas K");
+MODULE_DESCRIPTION("Return the current number of running processes");
 MODULE_LICENSE("GPL");
