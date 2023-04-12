@@ -4,21 +4,34 @@
 #include <linux/seq_file.h>
 #include <linux/sched.h>
 
-static int __init proc_count_init(void)
-{
-	pr_info("proc_count: init\n");
+static struct proc_dir_entry *entry;
+
+static int example(struct seq_file *m, void *v){
+	seq_printf(m, "hello world\n");
+	struct task_struct *p;
+	int sqr_sum = 0;
+	for_each_process(p) {
+		seq_printf(m, "hello world\n");
+	}
 	return 0;
 }
 
-static void __exit proc_count_exit(void)
+static int __init example_init(void)
 {
-	pr_info("proc_count: exit\n");
+	entry = proc_create_single("example_virtual_file", 0, NULL, example);
+	pr_info("example: init\n");
+	return 0;
 }
 
-module_init(proc_count_init);
-module_exit(proc_count_exit);
+static void __exit example_exit(void)
+{
+	proc_remove(entry);
+	pr_info("example: exit\n");
+}
 
-MODULE_AUTHOR("Your name");
-MODULE_DESCRIPTION("One sentence description");
+module_init(example_init);
+module_exit(example_exit);
+
+MODULE_AUTHOR("Shreyas Kamath);
+MODULE_DESCRIPTION("CS111 Lab 0 Solution");
 MODULE_LICENSE("GPL");
-
