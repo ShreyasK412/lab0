@@ -1,25 +1,13 @@
-## UID: 123456789
+## UID: 005717129
 
-(IMPORTANT: Only replace the above numbers with your true UID, do not modify spacing and newlines, otherwise your tarfile might not be created correctly)
+Building
+To build the kernel module, navigate to the folder containing proc_count.c and Makefile and execute the make command.
 
-# A Kernel Seedling
+Running
+After building the kernel module, insert it into the kernel by running sudo insmod proc_count.ko. Check the module's details by running modinfo proc_count.ko. To display the number of running processes, use the command cat /proc/count.
 
-One sentence description
+Cleaning Up
+To remove the kernel module, use the command sudo rmmod proc_count. This will unload the module from the kernel. Execute make clean to remove object and executable files and clean up the code.
 
-## Building
-
-Explain how to build your kernel module
-
-## Running
-
-Explain how to run your kernel module and what to expect
-
-## Cleaning Up
-
-Explain how to remove your kernel module and clean up the code
-
-## Testing
-
-Report which kernel release version you tested your module on
-(hint: use `uname`, check for options with `man uname`).
-It should match release numbers as seen on <https://www.kernel.org/>.
+Testing
+I tested my module on kernel release version 5.14.8-arch1-1, which I confirmed by running the command uname -r. To view information about the kernel release version being tested, use the command modinfo proc_count.ko.
